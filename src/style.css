@@ -13,7 +13,12 @@
     margin-right: auto;
 }
 
-div {}
+#start-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: solid blue 2px;
+}
 
 #p1-grid {
     width: 500px;
