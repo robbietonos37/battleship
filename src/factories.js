@@ -41,29 +41,34 @@ class GameBoard {
 
     receiveHit(coordX, coordY) {
 
-        switch (this.gameGrid[coordX][coordY]) {
+        switch (this.gameGrid[coordY][coordX]) {
             case '':
-                this.gameGrid[coordX][coordY] = 'shot';
+                this.gameGrid[coordY][coordX] = 'miss';
                 break;
             case 'carrier':
                 this.ships[0].getsHit();
-                this.gameGrid[coordX][coordY] = 'shot';
+                this.gameGrid[coordY][coordX] = 'shot';
+                this.numHit++;
                 break;
             case 'battleship':
                 this.ships[1].getsHit();
-                this.gameGrid[coordX][coordY] = 'shot';
+                this.gameGrid[coordY][coordX] = 'shot';
+                this.numHit++;
                 break;
             case 'cruiser':
                 this.ships[2].getsHit();
-                this.gameGrid[coordX][coordY] = 'shot';
+                this.gameGrid[coordY][coordX] = 'shot';
+                this.numHit++;
                 break;
             case 'submarine':
                 this.ships[3].getsHit();
-                this.gameGrid[coordX][coordY] = 'shot';
+                this.gameGrid[coordY][coordX] = 'shot';
+                this.numHit++;
                 break;
             case 'destroyer':
                 this.ships[4].getsHit();
-                this.gameGrid[coordX][coordY] = 'shot';
+                this.gameGrid[coordY][coordX] = 'shot';
+                this.numHit++;
                 break;
         }
     }
@@ -91,8 +96,8 @@ class PlayerObject {
         this.opponentBoard = enemyBoard;
     }
 
-    takeShot(coordX, coordY) {
-        this.opponentBoard.receiveHit(coordX, coordY)
+    takeShot(coordY, coordX) {
+        this.opponentBoard.receiveHit(coordY, coordX)
     }
 }
 

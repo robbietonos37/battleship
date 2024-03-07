@@ -66,3 +66,9 @@ it('test6', () => {
     expect(computer.computerBoard.ships[0].isSunk()).toBe(true);
 })
 
+it('test7', () => {
+    const player1 = new PlayerObject();
+    player1.playerBoard.placeShip(player1.playerBoard.ships[0], 3, 4);
+    expect(player1.playerBoard.placedShips).toBe(1);
+})
+

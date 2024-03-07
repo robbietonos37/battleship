@@ -43,3 +43,15 @@
 #p2-grid div {
     border: solid black 1px;
 }
+
+.safe-ship {
+    background-color: brown;
+}
+
+.ship-hit {
+    background-color: red;
+}
+
+.miss {
+    background-color: blue;
+}
