@@ -75,7 +75,7 @@ class GameBoard {
 
     placeShip(ship, rowCoord, startColCoord) {
         if (startColCoord + ship.shipLength > 9) {
-            console.log('in')
+            console.log('in');
         } else {
             this.gameGrid[rowCoord][startColCoord] = ship.shipName;
             this.gameGrid[rowCoord][startColCoord + 1] = ship.shipName;
@@ -83,6 +83,23 @@ class GameBoard {
                 this.gameGrid[rowCoord][startColCoord + i] = ship.shipName;
             }
             this.placedShips++;
+        }
+    }
+
+    computerPlaceShip(ship) {
+        const maxLength = 10 - ship.shipLength;
+
+        const xCoord = Math.floor(Math.random() * maxLength);
+        const yCoord = Math.floor(Math.random() * 9);
+        if (this.gameGrid[yCoord][xCoord] === '' && this.gameGrid[yCoord][xCoord + maxLength - 1] === '') {
+            this.gameGrid[yCoord][xCoord] = ship.shipName;
+            this.gameGrid[yCoord][xCoord + 1] = ship.shipName;
+            for (let i = 1; i < ship.shipLength; i++) {
+                this.gameGrid[yCoord][xCoord + i] = ship.shipName;
+            }
+            this.placedShips++;
+        } else {
+            this.computerPlaceShip(ship);
         }
     }
 }
@@ -106,19 +123,20 @@ class ComputerObject {
         this.computerBoard = new GameBoard();
     }
 
+    getPlayerBoard(humanBoard) {
+        this.playerHumanBoard = humanBoard;
+    }
+
     takeShot() {
         let coordX = Math.floor(Math.random() * 9) + 1;
         let coordY = Math.floor(Math.random() * 9) + 1;
 
-        while (this.playerHumanBoard.gameGrid[coordX][coordY] !== '') {
+        while (this.playerHumanBoard.gameGrid[coordY][coordX] !== '' && this.playerHumanBoard.gameGrid[coordY][coordX] !== 'shot' && this.playerHumanBoard.gameGrid[coordY][coordX] !== 'miss') {
             coordX = Math.floor(Math.random() * 9) + 1;
             coordY = Math.floor(Math.random() * 9) + 1;
         }
-        this.playerHumanBoard.receiveHit(coordX, coordY);
-    }
-
-    getPlayerBoard(humanBoard) {
-        this.playerHumanBoard = humanBoard;
+        this.playerHumanBoard.receiveHit(coordY, coordX);
+        return [coordY, coordX];
     }
 }
 

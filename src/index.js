@@ -8,6 +8,7 @@ const cpuFields = document.getElementsByClassName('cpu-field');
 const player1 = new PlayerObject();
 const computer = new ComputerObject();
 player1.getEnemyBoard(computer.computerBoard);
+computer.getPlayerBoard(player1.playerBoard)
 
 const computerFields = Array.from(cpuFields);
 
@@ -26,24 +27,32 @@ for (let i = 0; i < 10; i++) {
     }
 }
 
-computer.computerBoard.placeShip(computer.computerBoard.ships[0], 1, 4);
-computer.computerBoard.placeShip(computer.computerBoard.ships[1], 2, 4);
-computer.computerBoard.placeShip(computer.computerBoard.ships[2], 3, 4);
-computer.computerBoard.placeShip(computer.computerBoard.ships[3], 4, 4);
-computer.computerBoard.placeShip(computer.computerBoard.ships[4], 5, 4);
-
-let compIndex = 0;
+computer.computerBoard.computerPlaceShip(computer.computerBoard.ships[0]);
+computer.computerBoard.computerPlaceShip(computer.computerBoard.ships[1]);
+computer.computerBoard.computerPlaceShip(computer.computerBoard.ships[2]);
+computer.computerBoard.computerPlaceShip(computer.computerBoard.ships[3]);
+computer.computerBoard.computerPlaceShip(computer.computerBoard.ships[4]);
+console.log('the grid' + computer.computerBoard.gameGrid)
 for (let i = 0; i < 10; i++) {
-
+    console.log('Contents for row: ' + i)
     for (let j = 0; j < 10; j++) {
-        if (computer.computerBoard.gameGrid[i][j] !== '') {
-            computerFields[compIndex].classList.add('safe-ship');
-            compIndex++;
-            continue;
-        }
-        compIndex++;
+        console.log(computer.computerBoard.gameGrid[i][j])
     }
 }
+
+
+// let compIndex = 0;
+// for (let i = 0; i < 10; i++) {
+
+//     for (let j = 0; j < 10; j++) {
+//         if (computer.computerBoard.gameGrid[i][j] !== '') {
+//             //computerFields[compIndex].classList.add('safe-ship');
+//             compIndex++;
+//             continue;
+//         }
+//         compIndex++;
+//     }
+// }
 
 player1.playerBoard.placeShip(player1.playerBoard.ships[0], 1, 4);
 player1.playerBoard.placeShip(player1.playerBoard.ships[1], 2, 4);
@@ -90,11 +99,19 @@ for (let i = 0; i < 10; i++) {
 //     })
 
 // })
+function handleComputerShot(coordY, coordX) {
+    const realSpot = coordY * 10 + coordX;
+    if (player1.playerBoard.gameGrid[coordY][coordX] === 'miss' || player1.playerBoard.gameGrid[coordY][coordX] === '') {
+        p1Fields[realSpot].classList.add('miss');
+    }
+    else {
+        p1Fields[realSpot].classList.add('ship-hit');
+    }
+}
 
 
 for (let i = 0; i < computerFields.length; i++) {
     computerFields[i].addEventListener('click', () => {
-        debugger;
         player1.takeShot(computerFields[i].dataset.xCoord, computerFields[i].dataset.yCoord);
         if (computer.computerBoard.gameGrid[computerFields[i].dataset.yCoord][computerFields[i].dataset.xCoord] === 'shot') {
             computerFields[i].classList.add('ship-hit');
@@ -110,7 +127,10 @@ for (let i = 0; i < computerFields.length; i++) {
             console.log('column: ' + computerFields[i].dataset.xCoord)
             computerFields[i].classList.add('miss');
         }
+        const hits = computer.takeShot();
+        handleComputerShot(hits[0], hits[1]);
     })
 }
+
 
 
